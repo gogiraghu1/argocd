@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pki-certs
+  labels:
+    app: pki-certs
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pki-certs
+  template:
+    metadata:
+      labels:
+        app: pki-certs
+    spec:
+      containers:
+      - image: nginx-image
+        name: nginx
+        command: ["nginx"]
+        args: ["-g", "daemon off;"]
+        ports:
+        - name: http
+          containerPort: 8080
+        securityContext:
+          runAsUser: 100
+        volumeMounts:
+        - name: pki-certs-cfg
+          mountPath: /etc/nginx/conf.d
+        - name: pki-certs
+          mountPath: /var/lib/data/public
+      volumes:
+      - name: pki-certs-cfg
+        configMap:
+          name: pki-certs-cfg
+      - name: pki-certs
+        secret:
+          secretName: pki-certs

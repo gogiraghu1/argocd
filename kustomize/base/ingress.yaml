@@ -1,0 +1,26 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: pki-certs
+  labels:
+    app: pki-certs
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: "certs.pki.e.cchh.io"
+    external-dns.alpha.kubernetes.io/target: "a416406f150ca11e98d5806a3632834a-c21bdfe3ca84fc08.elb.us-west-2.amazonaws.com"
+    external-dns.alpha.kubernetes.io/ttl: "60"
+    kubernetes.io/ingress.class: "public"
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+spec:
+  tls:
+  - hosts:
+    - certs.pki.e.cchh.io
+    secretName: certs.pki.e.cchh.io
+  rules:
+  - host: certs.pki.e.cchh.io
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: pki-certs
+          servicePort: 80
+

@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: pki-certs
+  namespace: jenkins
+spec:
+  project: infra
+  destination:
+    namespace: pilot
+    server: 'https://kubernetes.default.svc'
+  source:
+    path: pki-certs/kustomize/overlays/prod
+    repoURL: 'git@github.com:collectivehealth/infra.git'
+    targetRevision: master
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

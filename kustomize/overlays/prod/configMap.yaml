@@ -1,0 +1,20 @@
+apiVersion: v1
+data:
+  servers.conf: |+
+    server {
+            listen 8080;
+            return 444;
+        }
+        server {
+            listen 8080;
+            server_name certs.pki.e.cchh.io;
+            location / {
+              root /var/lib/data/public;
+            }
+
+kind: ConfigMap
+metadata:
+  labels:
+    app: pki-certs
+  name: pki-certs-cfg
+  namespace: pilot

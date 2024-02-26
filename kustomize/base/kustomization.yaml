@@ -1,0 +1,24 @@
+resources:
+- deployment.yaml
+- service.yaml
+- ingress.yaml
+
+secretGenerator:
+- name: pki-secrets
+  files:
+  - ./secrets/SRE_Services_CA.pem
+  - ./secrets/Collective_Health_Intermediate_CA.pem
+  - ./secrets/Collective_Health_L2_Policy_CA.pem
+  - ./secrets/Collective_Health_Root_CA.pem
+  - ./secrets/Collective_Health_L1_Policy_CA.pem
+  - ./secrets/Collective_Health_L3_Policy_CA.pem
+  - ./secrets/IT_Infra_Services_CA.pem
+  - ./secrets/k8s_CA.pem
+
+configMapGenerator:
+- name: pki-certs-cfg
+  files:
+  - ./secrets/servers.conf
+
+generatorOptions:
+ disableNameSuffixHash: true
